@@ -29,13 +29,15 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        String[] taskArray = {
-                "Homework 1 - tmr",
-                "Homework 2 - later",
-                "HW 3 - idk",
-                "HW 4 - yesterday",
-                "Groceries - soon",
-                "Onani - NOW"};
+//        String[] taskArray = {
+//                "Homework 1 - tmr",
+//                "Homework 2 - later",
+//                "HW 3 - idk",
+//                "HW 4 - yesterday",
+//                "Groceries - soon",
+//                "Onani - NOW"};
+
+        String[] taskArray = {"-----------------------------------------"};
 
         final ArrayList<String> taskList = new ArrayList<>(Arrays.asList(taskArray));
 
@@ -108,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
 //            lv.setAdapter(taskAdapter1);
 
             String str = data.getStringExtra("result");
-            taskAdapter.add(str);
+            if(!str.equals(""))
+                taskAdapter.add(str);
             taskAdapter.notifyDataSetChanged();
         }
     }

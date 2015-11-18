@@ -42,9 +42,13 @@ public class TaskActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
                 String s1 = et_task.getText().toString();
                 String s2 = et_due.getText().toString();
-                String s3 = s1 + " - " + s2;
+                String s3 = "";
+                if(!s1.equals("")) {
+                    s3 = s1 + " - " + s2;
+                }
                 result.putExtra("result", s3);
                 setResult(0, result);
+
                 end();
             }
         });
