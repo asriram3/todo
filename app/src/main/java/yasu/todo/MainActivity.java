@@ -1,15 +1,25 @@
 package yasu.todo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
+
+
+    ArrayAdapter<String> taskAdapter;
+    ListView lv;
+    static final int PICK_CONTACT_REQUEST = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,14 +28,43 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        String[] taskArray = {
+                "Homework 1 - tmr",
+                "Homework 2 - later",
+                "HW 3 - idk",
+                "HW 4 - yesterday",
+                "Groceries - soon",
+                "Onani - NOW"};
+
+        final ArrayList<String> taskList = new ArrayList<>(Arrays.asList(taskArray));
+
+        lv = (ListView)findViewById(R.id.listview_tasks);
+
+
+        taskAdapter = new ArrayAdapter<String>(
+                this,
+                R.layout.task_layout,
+                R.id.task_item,
+                taskList);
+
+        lv.setAdapter(taskAdapter);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Intent intent = new Intent(getBaseContext(), TaskActivity.class);
+                intent.putStringArrayListExtra("tasks", taskList);
+//                startActivity(intent);
+                startActivityForResult(intent, PICK_CONTACT_REQUEST);
             }
         });
+
+
+
     }
 
     @Override
@@ -48,5 +87,29 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        if (requestCode == PICK_CONTACT_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                // A contact was picked.  Here we will just display it
+                // to the user.
+
+            }
+            System.out.println("refreshing data");
+//            ArrayList al = data.getStringArrayListExtra("result");
+//            ArrayAdapter taskAdapter1 = new ArrayAdapter<String>(
+//                    this,
+//                    R.layout.task_layout,
+//                    R.id.task_item,
+//                    al
+//            );
+//            lv = (ListView)findViewById(R.id.listview_tasks);
+//            lv.setAdapter(taskAdapter1);
+
+            String str = data.getStringExtra("result");
+            taskAdapter.add(str);
+            taskAdapter.notifyDataSetChanged();
+        }
     }
 }
