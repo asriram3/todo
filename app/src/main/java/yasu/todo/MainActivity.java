@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -37,11 +37,11 @@ public class MainActivity extends AppCompatActivity {
 //                "Groceries - soon",
 //                "Onani - NOW"};
 
-        String[] taskArray = {"-----------------------------------------"};
+        String[] taskArray = {"-------------------------------------"};
 
         final ArrayList<String> taskList = new ArrayList<>(Arrays.asList(taskArray));
 
-        lv = (ListView)findViewById(R.id.listview_tasks);
+        lv = (ListView) findViewById(R.id.listview_tasks);
 
 
         taskAdapter = new ArrayAdapter<String>(
@@ -51,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
                 taskList);
 
         lv.setAdapter(taskAdapter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                taskAdapter.remove(taskAdapter.getItem(position));
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -66,15 +73,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
