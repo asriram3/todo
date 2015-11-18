@@ -1,5 +1,7 @@
 package yasu.todo;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                taskAdapter.remove(taskAdapter.getItem(position));
+                remove(position);
             }
         });
 
@@ -71,10 +73,25 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, PICK_CONTACT_REQUEST);
             }
         });
-
-
     }
 
+
+    public void remove(int position){
+
+        final int pos = position;
+
+        new AlertDialog.Builder(this)
+                .setMessage("Do you want to remove this task?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        taskAdapter.remove(taskAdapter.getItem(pos));
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
